@@ -1,0 +1,44 @@
+# Compiled class files
+target/
+*.class
+
+# VS Code (keep configuration files, ignore user settings)
+.vscode/settings.json
+.vscode/*.code-workspace
+*.code-workspace
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+.factorypath
+
+# Logs
+*.log
+logs/
+
+# Maven
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Application properties (if sensitive)
+# application-local.properties
+# Note: application.properties contains database credentials - consider using environment variables or separate config file
+
+# Uploads directory (user-uploaded files)
+uploads/*
+!uploads/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Student</title>
+
+    <!-- <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            margin: 40px;
+
+            background-color: #f8faff;
+
+        }
+
+        h1 {
+
+            text-align: center;
+
+            color: #333;
+
+        }
+
+        .form-box {
+
+            text-align: center;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            max-width: 400px;
+
+            margin: 100px auto;
+
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+        }
+
+        input {
+
+            width: 90%;
+
+            padding: 10px;
+
+            margin: 10px 0;
+
+            border: 1px solid #ccc;
+
+            border-radius: 6px;
+
+            font-size: 16px;
+
+        }
+
+        button {
+
+            background-color: crimson;
+
+            color: white;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+        }
+
+        button:hover {
+
+            background-color: darkred;
+
+        }
+
+    </style> -->
+
+</head>
+
+<body>
+
+    <h1>Delete Student by ID</h1>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="index.html" style="display: inline-block; padding: 10px 20px; background-color: #4169e1; color: white; text-decoration: none; border-radius: 5px;">← Back to Home</a>
+    </div>
+
+    <div class="form-box">
+
+        <input type="number" id="studentid" placeholder="Enter Student ID" required><br>
+
+        <button onclick="deletestudent()">Delete Student</button>
+
+    </div>
+
+    <script>
+
+        function deletestudent() {
+
+            const stuid = document.getElementById("studentid").value;
+
+            if (!stuid) {
+
+                alert("Please enter a Student ID");
+
+                return;
+
+            }
+
+            // Ask for confirmation before deleting
+
+            const confirmDelete = confirm(`Are you sure you want to delete Student ID ${stuid}?`);
+
+            if (!confirmDelete) return;
+
+            fetch(`http://localhost:8085/cse/cse/${stuid}`, {
+
+                method: "DELETE"
+
+            })
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    throw new Error("Failed to delete student — record may not exist");
+
+                }
+
+                return response.text();
+
+            })
+
+            .then(() => {
+
+                alert("Student deleted successfully!");
+
+                document.getElementById("studentid").value = "";
+
+            })
+
+            .catch(error => {
+
+                alert(error.message);
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+

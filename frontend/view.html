@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fetch Student Details by ID</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f6fc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: royalblue;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #4169e1;
+        }
+
+        #addStudentBtn {
+            background-color: #28a745;
+        }
+
+        #addStudentBtn:hover {
+            background-color: #218838;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        table {
+
+            margin-top: 30px;
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            text-align: center;
+
+            background-color: white;
+
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+        }
+
+        th, td {
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+        }
+
+        th {
+
+            background-color: #f0f0f0;
+
+        }
+
+        img {
+
+            width: 80px;
+
+            height: 80px;
+
+            border-radius: 20%;
+
+            object-fit: cover;
+
+        }
+
+        #addStudentForm {
+            display: none;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+        }
+
+        #addStudentForm.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-buttons {
+            margin-top: 15px;
+        }
+
+        .form-buttons button {
+            margin-right: 10px;
+        }
+
+        #cancelBtn {
+            background-color: #dc3545;
+        }
+
+        #cancelBtn:hover {
+            background-color: #c82333;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>Student Records Management</h1>
+            <div class="button-group">
+                <button id="addStudentBtn" onclick="toggleAddStudentForm()">Add Student</button>
+            </div>
+        </div>
+
+        <!-- Add Student Form -->
+        <form id="addStudentForm" onsubmit="event.preventDefault(); addStudent();">
+            <h2 style="text-align: center; margin-bottom: 15px;">Add New Student</h2>
+            <div class="form-group">
+                <label for="newStudentName">Student Name *</label>
+                <input type="text" id="newStudentName" placeholder="Enter Student Name" required>
+            </div>
+            <div class="form-group">
+                <label for="newStudentCity">City *</label>
+                <input type="text" id="newStudentCity" placeholder="Enter City" required>
+            </div>
+            <div class="form-group">
+                <label for="newStudentBranch">Branch *</label>
+                <input type="text" id="newStudentBranch" placeholder="Enter Branch" required>
+            </div>
+            <div class="form-group">
+                <label for="newStudentMarks">Marks *</label>
+                <input type="number" id="newStudentMarks" placeholder="Enter Marks" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="newStudentPhoto">Photo (Optional)</label>
+                <input type="file" id="newStudentPhoto" accept="image/*">
+            </div>
+            <div class="form-buttons">
+                <button type="submit">Add Student</button>
+                <button type="button" id="cancelBtn" onclick="toggleAddStudentForm()">Cancel</button>
+            </div>
+        </form>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="index.html" style="display: inline-block; padding: 10px 20px; background-color: #4169e1; color: white; text-decoration: none; border-radius: 5px;">← Back to Home</a>
+        </div>
+
+        <hr style="margin: 30px 0;">
+
+        <h2 style="text-align: center;">Fetch Student Details by ID</h2>
+        <div style="text-align: center; margin: 20px 0;">
+            <input type="number" id="studentid" placeholder="Enter Student ID">
+            <button onclick="getdatabyid()">Get Student Details</button>
+        </div>
+
+    <table id="displaydata" border="1" style="margin-top: 20px; width: 100%; text-align: center;">
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>NAME</th>
+
+                <th>CITY</th>
+
+                <th>BRANCH</th>
+
+                <th>MARKS</th>
+
+                <th>Photo</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody></tbody>
+
+    </table>
+
+    <script>
+
+        function getdatabyid() {
+
+            const id = document.getElementById("studentid").value;
+
+            if (!id) {
+
+                alert("Please enter a Student ID");
+
+                return;
+
+            }
+
+            fetch(`http://localhost:8085/cse/cse/${id}`, {
+
+                method: "GET"
+
+            })
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    throw new Error("User not found");
+
+                }
+
+                return response.json();
+
+            })
+
+            .then(student => {
+
+                const tableBody = document.querySelector("#displaydata tbody");
+
+                tableBody.innerHTML = ''; // Clear old data
+
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+
+                    <td>${student.id}</td>
+
+                    <td>${student.name}</td>
+
+                    <td>${student.city}</td>
+
+                    <td>${student.branch}</td>
+
+                    <td>${student.marks}</td>
+
+                    <td>
+
+                        <img src="${student.photo ? 'http://localhost:8085' + student.photo : ''}" alt="Student Photo">
+
+                        </td>                    
+
+                `;
+
+                tableBody.appendChild(row);
+
+            })
+
+            .catch(error => {
+
+                alert(error.message);
+
+            });
+
+        }
+
+        function toggleAddStudentForm() {
+            const form = document.getElementById("addStudentForm");
+            form.classList.toggle("show");
+        }
+
+        function addStudent() {
+            const name = document.getElementById("newStudentName").value;
+            const city = document.getElementById("newStudentCity").value;
+            const branch = document.getElementById("newStudentBranch").value;
+            const marks = document.getElementById("newStudentMarks").value;
+            const photo = document.getElementById("newStudentPhoto").files[0];
+
+            if (!name || !city || !branch || !marks) {
+                alert("Please fill in all required fields");
+                return;
+            }
+
+            // Create FormData for multipart/form-data
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("city", city);
+            formData.append("branch", branch);
+            formData.append("marks", marks);
+            if (photo) {
+                formData.append("photo", photo);
+            }
+
+            fetch("http://localhost:8085/cse/cse", {
+                method: "POST",
+                body: formData
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || "Failed to add student");
+                }
+                return response.json();
+            })
+            .then(student => {
+                alert(`Student added successfully! Student ID: ${student.id}`);
+                // Reset form
+                document.getElementById("addStudentForm").reset();
+                toggleAddStudentForm();
+                // Optionally fetch and display the newly added student
+                document.getElementById("studentid").value = student.id;
+                getdatabyid();
+            })
+            .catch(error => {
+                alert("Error adding student: " + error.message);
+            });
+        }
+
+    </script>
+    </div>
+</body>
+
+</html>
+

@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Spring Boot Application",
+            "request": "launch",
+            "mainClass": "com.example.demo.BootProject2Application",
+            "projectName": "BootProject2",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": "-Dspring.profiles.active=dev"
+        },
+        {
+            "type": "java",
+            "name": "Debug Spring Boot Application",
+            "request": "launch",
+            "mainClass": "com.example.demo.BootProject2Application",
+            "projectName": "BootProject2",
+            "args": "",
+            "vmArgs": "-Dspring.profiles.active=dev"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch Frontend + Backend",
+            "configurations": [
+                "Launch Spring Boot Application"
+            ],
+            "stopAll": true
+        }
+    ]
+}
+

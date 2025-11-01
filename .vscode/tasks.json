@@ -1,0 +1,56 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Maven: Clean",
+            "type": "shell",
+            "command": "./mvnw.cmd clean",
+            "windows": {
+                "command": ".\\mvnw.cmd clean"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Maven: Compile",
+            "type": "shell",
+            "command": "./mvnw.cmd compile",
+            "windows": {
+                "command": ".\\mvnw.cmd compile"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Maven: Package",
+            "type": "shell",
+            "command": "./mvnw.cmd package",
+            "windows": {
+                "command": ".\\mvnw.cmd package"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Maven: Spring Boot Run",
+            "type": "shell",
+            "command": "./mvnw.cmd spring-boot:run",
+            "windows": {
+                "command": ".\\mvnw.cmd spring-boot:run"
+            },
+            "problemMatcher": [],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Start Live Server (Frontend)",
+            "type": "shell",
+            "command": "echo 'Install Live Server extension: https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer'",
+            "windows": {
+                "command": "echo Install Live Server extension"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
+

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Student</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6fc;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #4169e1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .btn-update {
+            background-color: #4169e1;
+        }
+
+        .btn-update:hover {
+            background-color: #3151c4;
+        }
+
+        .btn-reset {
+            background-color: #6c757d;
+        }
+
+        .btn-reset:hover {
+            background-color: #5a6268;
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4169e1;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Update Student</h1>
+        <a href="index.html" class="nav-link">← Back to Home</a>
+
+        <form id="studentform" onsubmit="event.preventDefault(); updatestudent();">
+            <div class="form-group">
+                <label for="studentid">Student ID *</label>
+                <input type="number" id="studentid" placeholder="Enter Student ID" required>
+            </div>
+
+            <div class="form-group">
+                <label for="studentname">Student Name</label>
+                <input type="text" id="studentname" placeholder="Enter Student Name">
+                <p class="help-text">Leave empty to keep current value</p>
+            </div>
+
+            <div class="form-group">
+                <label for="studentcity">City</label>
+                <input type="text" id="studentcity" placeholder="Enter City">
+                <p class="help-text">Leave empty to keep current value</p>
+            </div>
+
+            <div class="form-group">
+                <label for="studentbranch">Branch</label>
+                <input type="text" id="studentbranch" placeholder="Enter Branch">
+                <p class="help-text">Leave empty to keep current value</p>
+            </div>
+
+            <div class="form-group">
+                <label for="studentmarks">Marks</label>
+                <input type="number" id="studentmarks" placeholder="Enter Marks" step="0.01">
+                <p class="help-text">Leave empty to keep current value</p>
+            </div>
+
+            <div class="form-group">
+                <label for="studentphoto">Photo</label>
+                <input type="file" id="studentphoto" accept="image/*">
+                <p class="help-text">Optional - Select new photo</p>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-update">Update Student</button>
+                <button type="button" class="btn-reset" onclick="resetForm()">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function resetForm() {
+            document.getElementById("studentform").reset();
+        }
+
+        function updatestudent() {
+            const stuid = document.getElementById("studentid").value;
+
+            if (!stuid) {
+                alert("Please enter a Student ID");
+                return;
+            }
+
+            const uname = document.getElementById("studentname").value;
+            const ucity = document.getElementById("studentcity").value;
+            const ubranch = document.getElementById("studentbranch").value;
+            const umarks = document.getElementById("studentmarks").value;
+            const uphoto = document.getElementById("studentphoto").files[0];
+
+            // Use FormData for both text and file data
+            const formData = new FormData();
+
+            if (uname) formData.append("name", uname);
+            if (ucity) formData.append("city", ucity);
+            if (ubranch) formData.append("branch", ubranch);
+            if (umarks) formData.append("marks", umarks);
+            if (uphoto) formData.append("photo", uphoto);
+
+            fetch(`http://localhost:8085/cse/cse/${stuid}`, {
+                method: "PUT",
+                body: formData
+            })
+                .then(async response => {
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(errorText || "Student not found or update failed");
+                    }
+                    return response.text();
+                })
+                .then(() => {
+                    alert("Student updated successfully!");
+                    document.getElementById("studentform").reset();
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        }
+    </script>
+</body>
+
+</html>
